@@ -1,0 +1,21 @@
+{
+    "name": "thefunpower/paas_plat",
+    "type": "library",
+    "description": "PAAS",
+    "keywords": ["php"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ken.sun",
+            "email": "sunkangchina@163.com" 
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    }, 
+    "autoload": { 
+        "files": [ 
+            "./plat.php"
+        ]
+    }
+}

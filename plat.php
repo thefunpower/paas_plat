@@ -16,12 +16,14 @@ function service_set_app_cookie_config(){
         if(strpos($config['host'],$c['cookie_domain'])!==false){
             $flag = true;
             $config['cookie_domain'] = trim($c['cookie_domain']);
-            $config['cookie_prefix'] = trim($c['cookie_prefix']);
-            return true;
+            $config['cookie_prefix'] = trim($c['cookie_prefix']);  
         }
-    }else{
-        return false;
-    } 
+    }
+    if(!$flag){
+        die("
+            <div style='color:red;'>访问被中止！<br>请在软件平台控制中心正确配置当前应用根域名信息!</div>
+        ");
+    }
 }
 /**
 * 获取服务域名
@@ -40,25 +42,32 @@ function get_service_info($service_name){
   return $res;
 }
 /**
-* 登录基类
-*/
-class plat_login{
+* 基类
+*/ 
+class plat{
+    public $check_login = true;
     /**
     * 初始化
     */
     public function __construct(){
         $this->init();
     }
-
+    /**
+    * 设置COOKIE作用域
+    * 判断是否登录，未登录跳到SSO登录 
+    */
     public function init(){
-
-    }
+        service_set_app_cookie_config();
+        if($this->check_login){
+            get_rpc_login();    
+        }        
+    } 
     /**
     * 登录检测
     * 使用token检测登录信息
     * $config['redirect_url'] = '/';
     */
-    public function check(){ 
+    protected function login_use_token(){ 
         global $config;
         $token = g('token');
         $redirect_url = g('redirect_url')?:$config['redirect_url'];
@@ -96,8 +105,6 @@ class plat_login{
         cookie('sso_user_account',$data['user'],$time);
         cookie('sso_user_type',$data['type'],$time);
     } 
-
-
 }
 /**
 * 获取登录后的信息

@@ -4,6 +4,14 @@
 * 它用无效！
 * 
 */
+function service_set_service_cookie_config(){ 
+    //如 sso.test.com
+    $host = $_SERVER['HTTP_HOST'];
+    $domain = substr($host,strpos($host,'.'));
+    $rpc = get_plat_service('config');
+    $c   = $rpc->get_by_cookie_domain($domain);
+    __plat_cookie_get($c);
+}
 /**
  * 设置应用COOKIE信息
 */
@@ -12,6 +20,13 @@ function service_set_app_cookie_config(){
     $flag = false;
     $rpc = get_plat_service('app');
     $c = $rpc->get_config($config['host']);
+    __plat_cookie_get($c);
+}
+/**
+* 内部函数，COOKIE根域名判断
+*/
+function __plat_cookie_get($c){
+    global $config;
     if($c['cookie_domain'] && $c['cookie_prefix']){
         if(strpos($config['host'],$c['cookie_domain'])!==false){
             $flag = true;

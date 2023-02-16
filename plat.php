@@ -1,5 +1,10 @@
 <?php 
 /**
+* 此包仅提供给control_center控制中心使用
+* 它用无效！
+* 
+*/
+/**
 * 获取服务域名
 */
 function get_service_url($service_name){
@@ -19,6 +24,16 @@ function get_service_info($service_name){
 * 登录基类
 */
 class plat_login{
+    /**
+    * 初始化
+    */
+    public function __construct(){
+        $this->init();
+    }
+
+    public function init(){
+
+    }
     /**
     * 登录检测
     * 使用token检测登录信息

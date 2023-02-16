@@ -282,3 +282,50 @@ function yar_api_run($name){
         json_error(['msg'=>'serve is not exists']);
     } 
 }
+
+
+/**
+ * 设置应用或服务配置
+ */
+function plat_set_config($title, $body,$table='config',$where = [])
+{
+    if(in_array($title,[
+        '_timestamp',
+        '_signature',
+    ])){
+        return;
+    }
+    $one = db_get_one($table, "*", ['title' => $title]+$where); 
+    if (!$one) {
+        $insert = ['title' => $title, 'body' => $body];
+        if($where){
+            $insert =  $insert+$where;
+        }
+        db_insert($table, $insert);
+    } else {
+        db_update($table, ['body' => $body], ['id' => $one['id']]);
+    }
+}
+/**
+ * 获取应用或服务配置
+ */
+function plat_get_config($title,$table='config',$where = [])
+{
+    global $config;
+    if (is_array($title)) {
+        $list = [];
+        $all  = db_get($table, "*", ['title' => $title]+$where);
+        foreach ($all as $one) {
+            $body = $one['body']; 
+            $list[$one['title']] = $body ?: $config[$one['title']];
+        }
+        return $list;
+    } else {
+        $one  = db_get_one($table, "*", ['title' => $title]+$where);
+        $body = $one['body'];
+        if (!$body) {
+            return $config[$title];
+        } 
+        return $body; 
+    }
+}

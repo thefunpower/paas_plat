@@ -1,5 +1,21 @@
 <?php 
 /**
+* 获取服务域名
+*/
+function get_service_url($service_name){
+  $res = get_service_info($service_name); 
+  return $res['domain'];
+}
+/**
+* 获取服务信息
+*/
+function get_service_info($service_name){
+  $client = get_plat_service('service');
+  if(!$client){return;}
+  $res = $client->get('sso');
+  return $res;
+}
+/**
 * 登录基类
 */
 class plat_login{

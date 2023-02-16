@@ -5,6 +5,25 @@
 * 
 */
 /**
+ * 设置应用COOKIE信息
+*/
+function service_set_app_cookie_config(){
+    global $config;
+    $flag = false;
+    $rpc = get_plat_service('app');
+    $c = $rpc->get_config($config['host']);
+    if($c['cookie_domain'] && $c['cookie_prefix']){
+        if(strpos($config['host'],$c['cookie_domain'])!==false){
+            $flag = true;
+            $config['cookie_domain'] = trim($c['cookie_domain']);
+            $config['cookie_prefix'] = trim($c['cookie_prefix']);
+            return true;
+        }
+    }else{
+        return false;
+    } 
+}
+/**
 * 获取服务域名
 */
 function get_service_url($service_name){

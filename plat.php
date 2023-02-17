@@ -138,12 +138,14 @@ class plat{
 * 获取登录后的信息
 */
 function get_sso_logined_info(){
+    global $sso_user;
     if(cookie('sso_user_id')){
-        return [
+        $sso_user = [
             'user_id'=>cookie('sso_user_id'),
             'user_account'=>cookie('sso_user_account'),
             'user_type'=>cookie('sso_user_type'),
         ];
+        return $sso_user;
     }
 }
  

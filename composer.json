@@ -1,7 +1,7 @@
 {
     "name": "thefunpower/paas_plat",
     "type": "library",
-    "description": "PAAS",
+    "description": "RPC服务控制中心",
     "keywords": ["php"],
     "license": "MIT",
     "authors": [

@@ -157,7 +157,7 @@ function get_rpc_login(){
   $rpc = get_plat_service('service');
   $res = $rpc->get('sso'); 
   if(!cookie('sso_user_id')){
-    jump($res['domain'].'login?redirect_url='.urlencode($url));
+    jump($res['domain'].'login/index?redirect_url='.urlencode($url));
   }
 }
 /**

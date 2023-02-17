@@ -4,6 +4,19 @@
 * 它用无效！
 * 
 */
+
+/**
+* 检测使用服务，用户是否登录
+*/
+function service_check_login(){
+    if(!cookie('sso_user_id') || !cookie('sso_user_account')){
+        echo '<div style="margin:auto;text-align: center;font-size: 18px;margin-top: 20px;color: red;">403访问被禁止</div>';
+        exit;
+    }
+}
+/**
+* 获取服务配置
+*/
 function service_set_service_cookie_config(){ 
     //如 sso.test.com
     $host = $_SERVER['HTTP_HOST'];
@@ -124,7 +137,7 @@ class plat{
 /**
 * 获取登录后的信息
 */
-function get_rpc_logined(){
+function get_sso_logined_info(){
     if(cookie('sso_user_id')){
         return [
             'user_id'=>cookie('sso_user_id'),

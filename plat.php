@@ -10,7 +10,10 @@
 class openapi{
     public function __construct()
     {
-        $body = get_input(); 
+        $body = get_input();  
+        if(!is_array($body)){
+            json_error(['code'=>504,'msg'=>'Too Many Request']);
+        }
         $ak = $body['_ak'];
         $rpc = get_plat_service('app'); 
         $res = $rpc->get_config_by_ak($ak);  

@@ -4,6 +4,43 @@
 * 它用无效！
 * 
 */
+/**
+* 开放接口
+*/
+class openapi{
+    public function __construct()
+    {
+        $body = get_input(); 
+        $ak = $body['_ak'];
+        $rpc = get_plat_service('app'); 
+        $res = $rpc->get_config_by_ak($ak);  
+        $secret = $res['sk']; 
+        $_POST = $body; 
+        signature_checker($secret,TRUE); 
+        $this->init();
+    }
+    public function init(){}
+
+    public static function run($rpc_name,$app,$action,$new_param = []){ 
+        global $config;
+        $secret = $config['sk'];
+        $params = [ 
+            '_time'=>time(),
+            '_ak'=>$config['ak']
+        ]; 
+        $params = array_merge($new_param,$params);
+        $sign = sign_by_secret($params,$secret,TRUE); 
+        $_POST = $params;
+        $_POST['_signature'] = $sign; 
+        $rpc = get_plat_service('service');
+        $res = $rpc->get($rpc_name);
+        $url = $res['domain'].'openapi/'.$app.'/'.$action; 
+        $client = guzzle_http(); 
+        $res    = $client->request('POST', $url,['json'=>$_POST]);
+        $body = (string)$res->getBody();  
+        return $body;
+    }
+}
 
 /**
 * 检测使用服务，用户是否登录

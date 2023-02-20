@@ -16,6 +16,11 @@ class openapi{
         $res = $rpc->get_config_by_ak($ak);  
         $secret = $res['sk']; 
         $_POST = $body; 
+        if($body['_time']+60 > time()){
+
+        }else{
+            json_error(['msg'=>'Request Failed','code'=>404]);
+        }
         signature_checker($secret,TRUE); 
         $this->init();
     }
